@@ -1,0 +1,49 @@
+<div class="form-container glass">
+  <div class="form-header">
+    <h2>
+      @if (mode === 'CREATE') { Incluir Novo }
+      @else if (mode === 'EDIT') { Editar Registro }
+      @else { Confirmar Exclusão }
+    </h2>
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="fields-grid">
+      @for (field of fields; track field.key) {
+        <div class="form-group">
+          <label [for]="field.key">{{ field.label }}</label>
+          <input 
+            [id]="field.key" 
+            [type]="field.type" 
+            [formControlName]="field.key"
+            class="form-control"
+            [placeholder]="'Informe ' + field.label"
+          />
+        </div>
+      }
+    </div>
+
+    @if (mode === 'DELETE') {
+      <div class="warning-box">
+        <span class="icon">⚠️</span>
+        <p>Tem certeza que deseja excluir este registro? Esta ação não pode ser desfeita.</p>
+      </div>
+    }
+
+    <div class="form-actions">
+      <button type="button" class="btn btn-secondary" (click)="formCancel.emit()">
+        Cancelar
+      </button>
+      
+      <button 
+        type="submit" 
+        [class]="mode === 'DELETE' ? 'btn btn-danger' : 'btn btn-primary'"
+        [disabled]="form.invalid && mode !== 'DELETE'"
+      >
+        @if (mode === 'CREATE') { Salvar }
+        @else if (mode === 'EDIT') { Atualizar }
+        @else { Excluir Permanentemente }
+      </button>
+    </div>
+  </form>
+</div>

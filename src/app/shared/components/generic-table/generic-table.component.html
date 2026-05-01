@@ -1,0 +1,59 @@
+<div class="table-container glass">
+  <div class="table-header">
+    <h2>Consulta de Registros</h2>
+    <div class="header-actions">
+      <button class="btn btn-secondary" (click)="refresh.emit()" title="Recarregar dados">🔄</button>
+      <button class="btn btn-primary" (click)="create.emit()">+ Novo Registro</button>
+    </div>
+  </div>
+
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          @for (col of columns; track col.key) {
+            <th>{{ col.label }}</th>
+          }
+          <th class="actions-col">Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (row of paginatedData; track row.id) {
+          <tr>
+            @for (col of columns; track col.key) {
+              <td>{{ row[col.key] }}</td>
+            }
+            <td class="actions">
+              <button class="btn-icon edit" (click)="edit.emit(row)" title="Editar">✏️</button>
+              <button class="btn-icon delete" (click)="delete.emit(row)" title="Excluir">🗑️</button>
+            </td>
+          </tr>
+        } @empty {
+          <tr class="empty-row">
+            <td [attr.colspan]="columns.length + 1" class="empty-state">
+              Nenhum registro encontrado.
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <div class="pagination">
+    <span>Página {{ currentPage() + 1 }} de {{ totalPages || 1 }}</span>
+    <div class="pagination-controls">
+      <button 
+        class="btn-nav" 
+        [disabled]="currentPage() === 0" 
+        (click)="onPageChange(currentPage() - 1)">
+        Anterior
+      </button>
+      <button 
+        class="btn-nav" 
+        [disabled]="currentPage() >= totalPages - 1" 
+        (click)="onPageChange(currentPage() + 1)">
+        Próxima
+      </button>
+    </div>
+  </div>
+</div>

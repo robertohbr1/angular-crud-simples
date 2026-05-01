@@ -1,0 +1,29 @@
+<main class="page-container">
+  @if (errorMessage()) {
+    <div class="error-alert glass">
+      <span>❌ {{ errorMessage() }}</span>
+      <button class="btn-close" (click)="errorMessage.set(null)">×</button>
+    </div>
+  }
+
+  @if (!showForm()) {
+    <app-generic-table
+      [columns]="columns"
+      [data]="clients()"
+      [totalRecords]="totalRecords()"
+      (create)="onAdd()"
+      (edit)="onEdit($event)"
+      (delete)="onDelete($event)"
+      (pageChange)="loadClients()"
+      (refresh)="loadClients()"
+    ></app-generic-table>
+  } @else {
+    <app-generic-form
+      [mode]="formMode()"
+      [fields]="fields"
+      [initialData]="selectedClient() || {}"
+      (formSubmit)="onFormSubmit($event)"
+      (formCancel)="onFormCancel()"
+    ></app-generic-form>
+  }
+</main>
