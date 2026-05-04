@@ -11,7 +11,7 @@
     <table>
       <thead>
         <tr>
-          @for (col of columns; track col.key) {
+          @for (col of visibleColumns; track col.key) {
             <th>{{ col.label }}</th>
           }
           <th class="actions-col">Ações</th>
@@ -20,7 +20,7 @@
       <tbody>
         @for (row of paginatedData; track row.id) {
           <tr>
-            @for (col of columns; track col.key) {
+            @for (col of visibleColumns; track col.key) {
               <td>{{ row[col.key] }}</td>
             }
             <td class="actions">
@@ -30,7 +30,7 @@
           </tr>
         } @empty {
           <tr class="empty-row">
-            <td [attr.colspan]="columns.length + 1" class="empty-state">
+            <td [attr.colspan]="visibleColumns.length + 1" class="empty-state">
               Nenhum registro encontrado.
             </td>
           </tr>

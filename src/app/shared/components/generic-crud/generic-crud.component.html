@@ -9,19 +9,19 @@
   @if (!showForm()) {
     <app-generic-table
       [columns]="columns"
-      [data]="clients()"
+      [data]="records()"
       [totalRecords]="totalRecords()"
       (create)="onAdd()"
       (edit)="onEdit($event)"
       (delete)="onDelete($event)"
-      (pageChange)="loadClients()"
-      (refresh)="loadClients()"
+      (pageChange)="loadRecords()"
+      (refresh)="loadRecords()"
     ></app-generic-table>
   } @else {
     <app-generic-form
       [mode]="formMode()"
-      [fields]="fields"
-      [initialData]="selectedClient() || {}"
+      [columns]="columns"
+      [initialData]="selectedRecord() || {}"
       (formSubmit)="onFormSubmit($event)"
       (formCancel)="onFormCancel()"
     ></app-generic-form>

@@ -4,6 +4,10 @@ import { CommonModule } from '@angular/common';
 export interface ColumnDefinition {
   key: string;
   label: string;
+  ShowInGrid?: boolean;
+  type?: string;
+  required?: boolean;
+  ShowInEdit?: boolean;
 }
 
 @Component({
@@ -18,6 +22,10 @@ export class GenericTableComponent {
   @Input() data: any[] = [];
   @Input() totalRecords = 0;
   @Input() pageSize = 20;
+  
+  get visibleColumns(): ColumnDefinition[] {
+    return this.columns.filter(c => c.ShowInGrid !== false);
+  }
   
   @Output() pageChange = new EventEmitter<number>();
   @Output() edit = new EventEmitter<any>();

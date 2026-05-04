@@ -1,15 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
+import { ColumnDefinition } from '../generic-table/generic-table.component';
 
 export type FormMode = 'CREATE' | 'EDIT' | 'DELETE';
-
-export interface FieldConfig {
-  key: string;
-  label: string;
-  type: string;
-  required?: boolean;
-}
 
 @Component({
   selector: 'app-generic-form',
@@ -20,8 +14,12 @@ export interface FieldConfig {
 })
 export class GenericFormComponent implements OnInit {
   @Input() mode: FormMode = 'CREATE';
-  @Input() fields: FieldConfig[] = [];
+  @Input() columns: ColumnDefinition[] = [];
   @Input() initialData: any = {};
+  
+  get visibleFields(): ColumnDefinition[] {
+    return this.columns.filter(f => f.ShowInEdit !== false);
+  }
   
   @Output() formSubmit = new EventEmitter<any>();
   @Output() formCancel = new EventEmitter<void>();
@@ -34,10 +32,10 @@ export class GenericFormComponent implements OnInit {
 
   private initForm(): void {
     const group: any = {};
-    this.fields.forEach(field => {
-      group[field.key] = new FormControl(
-        { value: this.initialData[field.key] || '', disabled: this.mode === 'DELETE' },
-        field.required ? Validators.required : []
+    this.columns.forEach(col => {
+      group[col.key] = new FormControl(
+        { value: this.initialData[col.key] || '', disabled: this.mode === 'DELETE' },
+        col.required ? Validators.required : []
       );
     });
     this.form = new FormGroup(group);

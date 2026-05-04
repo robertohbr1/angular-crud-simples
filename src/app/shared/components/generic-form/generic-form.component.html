@@ -9,12 +9,12 @@
 
   <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <div class="fields-grid">
-      @for (field of fields; track field.key) {
+      @for (field of visibleFields; track field.key) {
         <div class="form-group">
           <label [for]="field.key">{{ field.label }}</label>
           <input 
             [id]="field.key" 
-            [type]="field.type" 
+            [type]="field.type || 'text'" 
             [formControlName]="field.key"
             class="form-control"
             [placeholder]="'Informe ' + field.label"
