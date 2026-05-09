@@ -1,9 +1,17 @@
 <div class="table-container glass">
   <div class="table-header">
-    <h2>Consulta de Registros</h2>
+    <h2>
+      @if (isLookupMode) {
+        Selecione um Registro
+      } @else {
+        Consulta de Registros
+      }
+    </h2>
     <div class="header-actions">
       <button class="btn btn-secondary" (click)="refresh.emit()" title="Recarregar dados">🔄</button>
-      <button class="btn btn-primary" (click)="create.emit()">+ Novo Registro</button>
+      @if (!isLookupMode) {
+        <button class="btn btn-primary" (click)="create.emit()">+ Novo Registro</button>
+      }
     </div>
   </div>
 
@@ -24,8 +32,12 @@
               <td>{{ row[col.key] }}</td>
             }
             <td class="actions">
-              <button class="btn-icon edit" (click)="edit.emit(row)" title="Editar">✏️</button>
-              <button class="btn-icon delete" (click)="delete.emit(row)" title="Excluir">🗑️</button>
+              @if (isLookupMode) {
+                <button class="btn-icon select" (click)="selectRecord.emit(row)" title="Selecionar">✔️</button>
+              } @else {
+                <button class="btn-icon edit" (click)="edit.emit(row)" title="Editar">✏️</button>
+                <button class="btn-icon delete" (click)="delete.emit(row)" title="Excluir">🗑️</button>
+              }
             </td>
           </tr>
         } @empty {

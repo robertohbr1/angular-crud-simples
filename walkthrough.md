@@ -1,29 +1,37 @@
 # Walkthrough - Sistema CRUD Angular Premium
 
-A implementação do sistema CRUD foi concluída com sucesso, focando em manutenibilidade, segurança e estética.
+A implementação do sistema CRUD foi concluída e refatorada com sucesso, focando em manutenibilidade extrema, segurança, estética e baixo acoplamento.
 
 ## Arquitetura Implementada
 
-### 1. Core (Serviços Base)
-- **[BaseCrudService](file:///c:/Projetos/ProjetoOff/angular/src/app/core/services/base-crud.service.ts)**: Classe abstrata que encapsula toda a lógica de comunicação com a API. Suporta paginação de 20 registros por padrão.
-- **[ApiService](file:///c:/Projetos/ProjetoOff/angular/src/app/core/services/api.service.ts)**: Wrapper para o `HttpClient`. Agora configurado para usar o proxy `/api`.
+### 1. Rotas Dinâmicas (Generic Crud)
+Toda a configuração de listagem, campos, formulários e integração com a API agora ocorre em um **único lugar**: o roteador (`app.routes.ts`). Não há mais necessidade de criar dezenas de componentes ou serviços individuais para cada nova entidade no frontend.
+
+- **[GenericCrudComponent](file:///c:/Projetos/ProjetoOff/angular/src/app/shared/components/generic-crud/generic-crud.component.ts)**: Componente master que gerencia o fluxo de tabela -> modal de formulário, recebendo a configuração do roteador (`data`).
 
 ### 2. Componentes Genéricos (Shared)
-- **[GenericTableComponent](file:///c:/Projetos/ProjetoOff/angular/src/app/shared/components/generic-table/generic-table.component.ts)**: Componente de tabela dinâmico com paginação integrada.
-- **[GenericFormComponent](file:///c:/Projetos/ProjetoOff/angular/src/app/shared/components/generic-form/generic-form.component.ts)**: Componente único que lida com **Inclusão**, **Edição** e **Exclusão**. No modo de exclusão, os campos são desabilitados automaticamente.
+- **[GenericTableComponent](file:///c:/Projetos/ProjetoOff/angular/src/app/shared/components/generic-table/generic-table.component.ts)**: Componente de tabela dinâmico com paginação e busca integradas.
+- **[GenericFormComponent](file:///c:/Projetos/ProjetoOff/angular/src/app/shared/components/generic-form/generic-form.component.ts)**: Formulário que se monta automaticamente com base na `ColumnDefinition` informada, suportando campos obrigatórios, lookups e desabilitação em exclusões.
+- **[GenericLookupModalComponent](file:///c:/Projetos/ProjetoOff/angular/src/app/shared/components/generic-lookup-modal/generic-lookup-modal.component.ts)**: Modal dinâmica e flexível para pesquisa de chaves estrangeiras.
 
-### 3. Integração com API Real & Proxy
-- Modelo de `Product` sincronizado com o Swagger em `localhost:5037`.
-- **Implementação de Proxy**: Para evitar problemas de CORS durante o desenvolvimento, configurei um [proxy.conf.json](file:///c:/Projetos/ProjetoOff/angular/proxy.conf.json). Isso permite que o Angular converse com o backend de forma transparente.
-- **Sucesso**: O sistema agora carrega dados reais (ex: "Coca 2l") com IDs no formato UUID diretamente do banco de dados.
+### 3. Registro de Lookups (Lookups Registry)
+Para simplificar ainda mais o `app.routes.ts`, as configurações que exigem pesquisas em outras tabelas (Lookups) estão centralizadas num registro único:
+- **[lookups.registry.ts](file:///c:/Projetos/ProjetoOff/angular/src/app/shared/lookups.registry.ts)**: Contém as definições de endpoint e colunas para modais de busca (ex: UF, CNAE).
+- Basta utilizar `lookupName: 'UF'` nas definições de coluna, e o sistema automaticamente incluirá o botão de busca rápida (`🔍`) e o link para a tela da entidade (`↗️`).
 
-## Verificação Realizada
-
-1.  **Testes Unitários**: Criado `base-crud.service.spec.ts` para validar a lógica de comunicação e paginação.
-2.  **Verificação Manual (Proxy)**: Confirmado via browser que o CORS foi mitigado e os dados reais estão populando a tabela.
+## Integração com API Real & Proxy
+- **Implementação de Proxy**: Para evitar problemas de CORS durante o desenvolvimento, configuramos um [proxy.conf.json](file:///c:/Projetos/ProjetoOff/angular/proxy.conf.json). Isso permite que o Angular converse com o backend de forma transparente.
 
 ## Como Manter com IA
-Para adicionar um novo CRUD, peça para a IA:
-1. "Crie um novo modelo para [Entidade] estendendo BaseEntity".
-2. "Crie um serviço para [Entidade] estendendo BaseCrudService".
-3. "Crie uma página de listagem usando GenericTable e GenericForm para [Entidade]".
+Para adicionar um novo CRUD na aplicação:
+
+1. **No Backend (C#)**:
+   - Crie a entidade, o endpoint (ex: `EntidadeEndpoints.cs`), e adicione no `AppDbContext`.
+2. **No Frontend (Angular)**:
+   - Abra o `app.routes.ts`.
+   - Crie um novo objeto de rota vinculando o `component: GenericCrudComponent`.
+   - Adicione no `data` o `endpoint`, `entityName` e o array `columns` com os metadados dos campos.
+   - Adicione a nova tela na navegação do cabeçalho em `app.html` (se for necessário).
+3. **Novo Campo Relacional (Lookup)**:
+   - Adicione a configuração de busca no `lookups.registry.ts`.
+   - Nas colunas do `app.routes.ts`, adicione `lookupName: 'SUA_CHAVE'`. O formulário cuidará de todo o resto automaticamente!

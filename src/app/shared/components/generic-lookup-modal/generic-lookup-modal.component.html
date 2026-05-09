@@ -1,0 +1,28 @@
+<div class="modal-overlay">
+  <div class="modal-content glass">
+    <div class="modal-header">
+      <h2>Seleção de Registro</h2>
+      <button class="btn-close" (click)="closed.emit()">×</button>
+    </div>
+    <div class="modal-body">
+      @if (errorMessage()) {
+        <div class="error-alert glass">
+          <span>❌ {{ errorMessage() }}</span>
+          <button class="btn-close" (click)="errorMessage.set(null)">×</button>
+        </div>
+      }
+      <app-generic-table
+        [columns]="columns"
+        [data]="records()"
+        [totalRecords]="totalRecords()"
+        [isLookupMode]="true"
+        (selectRecord)="selected.emit($event)"
+        (refresh)="loadRecords()"
+        (pageChange)="loadRecords()"
+      ></app-generic-table>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" (click)="closed.emit()">Cancelar</button>
+    </div>
+  </div>
+</div>

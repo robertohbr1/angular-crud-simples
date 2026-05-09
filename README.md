@@ -1,59 +1,50 @@
-# CrudApp
+# Generic Crud Architecture - Angular Frontend
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.0.2.
+Esta aplicação utiliza uma arquitetura front-end baseada em componentes genéricos e rotas dinâmicas, desenhada para acelerar o desenvolvimento e facilitar a manutenção por Inteligência Artificial.
 
-## Development server
+## Princípios Core
 
-To start a local development server, run:
+1. **DRY (Don't Repeat Yourself)**: Nenhuma tela de CRUD (tabela + formulário) é criada individualmente.
+2. **Data-Driven UI**: A interface é gerada dinamicamente a partir de metadados definidos no roteador (`app.routes.ts`).
+3. **Ponto Único de Manutenção**: Alterações no design, layout ou comportamento (como paginação e lookups) são feitas uma única vez nos componentes genéricos e refletidas em todo o sistema.
 
-```bash
-ng serve
-```
+## Estrutura da Arquitetura
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+### 1. Configuração de Rotas (`app.routes.ts`)
+O `app.routes.ts` é o coração do sistema. Nele, definimos as rotas apontando sempre para o `GenericCrudComponent` e passando os metadados via propriedade `data`:
 
-## Code scaffolding
+- **`endpoint`**: A rota na API (ex: `products`).
+- **`entityName`**: O nome da entidade para exibição (ex: `Produtos`).
+- **`columns`**: Array de `ColumnDefinition` que define quais campos existem, se aparecem na grid, se são editáveis, obrigatoriedade, tipos, e se possuem dependências externas (Lookups).
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+### 2. Generic Crud Component (`generic-crud.component.ts`)
+É o contêiner principal de uma página. Ele lê os metadados da rota atual, se comunica com o `BaseCrudService` e orquestra a troca entre a Tabela de Listagem e o Formulário de Edição/Criação.
 
-```bash
-ng generate component component-name
-```
+### 3. Tabela Genérica (`generic-table.component.ts`)
+Renderiza uma grid de dados baseada nas colunas que possuem `ShowInGrid: true`. Possui suporte nativo a paginação.
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+### 4. Formulário Genérico (`generic-form.component.ts`)
+Gera inputs dinamicamente com base no array de colunas (`ShowInEdit: true`). 
+- Valida obrigatoriedades.
+- Desabilita campos no modo "Exclusão".
+- Inclui ações extras (como pesquisa avançada) para chaves estrangeiras.
 
-```bash
-ng generate --help
-```
+### 5. Lookups Registry (`lookups.registry.ts`)
+O registro centralizado para campos que dependem de outras tabelas. Em vez de declarar toda a configuração de uma modal de busca a cada coluna, basta declarar:
+`lookupName: 'UF'` no `app.routes.ts`.
 
-## Building
+O motor de formulários (`GenericFormComponent`) lerá o `LOOKUPS_REGISTRY` e automaticamente:
+- Criará um botão de lupa (`🔍`) que abre o `GenericLookupModalComponent` listando os dados da API (ex: `/api/ufs`).
+- Criará um botão de atalho (`↗️`) que abre a página de cadastro da entidade alvo em nova guia.
+- **Resolução de Nomes Automática**: O formulário fará requisições de background para popular um *label* dinâmico à direita do campo, mostrando o nome descritivo do código informado.
 
-To build the project run:
+## Como Adicionar uma Nova Entidade
 
-```bash
-ng build
-```
+Para adicionar, por exemplo, "Categorias":
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+1. Se a nova entidade precisar ser buscada como chave estrangeira por outros cadastros, adicione-a no `src/app/shared/lookups.registry.ts`.
+2. Em `src/app/app.routes.ts`, adicione uma nova rota `/categories`, apontando para o `GenericCrudComponent`.
+3. Defina os campos no array `columns` do `data`.
+4. (Opcional) Adicione um link no header em `app.html` para acessar a nova rota.
 
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Isso é o suficiente para ter Listagem, Paginação, Inclusão, Edição, Exclusão e Validação operando em conjunto com a API!

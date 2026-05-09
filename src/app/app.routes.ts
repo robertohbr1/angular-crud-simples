@@ -28,7 +28,15 @@ export const routes: Routes = [
         { key: 'name', label: 'Nome / Razão Social', ShowInGrid: true, ShowInEdit: true, type: 'text', required: true },
         { key: 'cnpj', label: 'CNPJ', ShowInGrid: true, ShowInEdit: true, type: 'text', required: true },
         { key: 'address', label: 'Endereço', ShowInGrid: false, ShowInEdit: true, type: 'text', required: false },
-        { key: 'phone', label: 'Telefone', ShowInGrid: true, ShowInEdit: true, type: 'text', required: true }
+        { key: 'phone', label: 'Telefone', ShowInGrid: true, ShowInEdit: true, type: 'text', required: true },
+        {
+          key: 'uf', label: 'UF', ShowInGrid: true, ShowInEdit: true, type: 'text', required: true,
+          lookupName: 'UF'
+        },
+        {
+          key: 'cnae', label: 'CNAE', ShowInGrid: true, ShowInEdit: true, type: 'text', required: true,
+          lookupName: 'CNAE'
+        }
       ] as ColumnDefinition[]
     }
   },
@@ -44,8 +52,38 @@ export const routes: Routes = [
         { key: 'cnpj', label: 'CNPJ', ShowInGrid: true, ShowInEdit: true, type: 'text', required: true },
         { key: 'address', label: 'Endereço', ShowInGrid: false, ShowInEdit: true, type: 'text', required: false },
         { key: 'phone', label: 'Telefone', ShowInGrid: true, ShowInEdit: true, type: 'text', required: true },
-        { key: 'uf', label: 'UF', ShowInGrid: true, ShowInEdit: true, type: 'text', required: true },
-        { key: 'cna', label: 'CNAE', ShowInGrid: true, ShowInEdit: true, type: 'text', required: true }
+        {
+          key: 'uf', label: 'UF', ShowInGrid: true, ShowInEdit: true, type: 'text', required: true,
+          lookupName: 'UF'
+        },
+        {
+          key: 'cnae', label: 'CNAE', ShowInGrid: true, ShowInEdit: true, type: 'text', required: true,
+          lookupName: 'CNAE'
+        }
+      ] as ColumnDefinition[]
+    }
+  },
+  {
+    path: 'ufs',
+    component: GenericCrudComponent,
+    data: {
+      endpoint: 'ufs',
+      entityName: 'Unidades Federativas',
+      columns: [
+        { key: 'id', label: 'UF', ShowInGrid: true, ShowInEdit: true, type: 'text', required: true },
+        { key: 'nome', label: 'Nome', ShowInGrid: true, ShowInEdit: true, type: 'text', required: true }
+      ] as ColumnDefinition[]
+    }
+  },
+  {
+    path: 'cnaes',
+    component: GenericCrudComponent,
+    data: {
+      endpoint: 'cnaes',
+      entityName: 'CNAEs',
+      columns: [
+        { key: 'id', label: 'CNAE', ShowInGrid: true, ShowInEdit: true, type: 'text', required: true },
+        { key: 'nome', label: 'Nome', ShowInGrid: true, ShowInEdit: true, type: 'text', required: true }
       ] as ColumnDefinition[]
     }
   }

@@ -8,6 +8,7 @@ export interface ColumnDefinition {
   type?: string;
   required?: boolean;
   ShowInEdit?: boolean;
+  lookupName?: string;
 }
 
 @Component({
@@ -22,6 +23,7 @@ export class GenericTableComponent {
   @Input() data: any[] = [];
   @Input() totalRecords = 0;
   @Input() pageSize = 20;
+  @Input() isLookupMode = false;
   
   get visibleColumns(): ColumnDefinition[] {
     return this.columns.filter(c => c.ShowInGrid !== false);
@@ -32,6 +34,7 @@ export class GenericTableComponent {
   @Output() delete = new EventEmitter<any>();
   @Output() create = new EventEmitter<void>();
   @Output() refresh = new EventEmitter<void>();
+  @Output() selectRecord = new EventEmitter<any>();
 
   currentPage = signal(0);
 
