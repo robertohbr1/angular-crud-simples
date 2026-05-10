@@ -1,0 +1,75 @@
+<div class="glass" style="padding: 2.5rem; border-radius: 24px; max-width: 600px; margin: 3rem auto;">
+  <h2
+    style="margin: 0 0 2rem 0; font-size: 1.75rem; background: linear-gradient(135deg, #fff 0%, #94a3b8 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+    Teste de Lookup: Fornecedor
+  </h2>
+
+  <p style="margin-bottom: 2rem; color: #94a3b8; font-size: 0.95rem;">
+    Esta tela é apenas para testar o componente independente de lookup. Nenhum dado será salvo no banco de dados.
+  </p>
+
+  <div style="margin-bottom: 1.5rem;">
+    <app-generic-lookup-field [formControl]="fornecedorControl" lookupName="Fornecedores" fieldLabel="Fornecedor"
+      fieldId="fornecedorTest" placeholder="Informe o Fornecedor">
+    </app-generic-lookup-field>
+  </div>
+
+  <div style="margin-bottom: 1.5rem;">
+    <app-generic-lookup-field [formControl]="clienteControl" lookupName="Clientes" fieldLabel="Cliente"
+      fieldId="clienteTest" placeholder="Informe o Cliente">
+    </app-generic-lookup-field>
+  </div>
+
+  <div style="margin-bottom: 1.5rem;">
+    <app-generic-lookup-field [formControl]="produtoControl" lookupName="Produtos" fieldLabel="Produto"
+      fieldId="produtoTest">
+    </app-generic-lookup-field>
+  </div>
+
+  <div style="margin-bottom: 1.5rem;">
+    <app-generic-date-period caption="Período de Emissão" mode="DATE" fieldIdPrefix="emissao"
+      [startControl]="startEmissaoControl" [endControl]="endEmissaoControl">
+    </app-generic-date-period>
+  </div>
+
+  <div style="margin-bottom: 1.5rem;">
+    <app-generic-date-period caption="Período de Faturamento" mode="MONTH" fieldIdPrefix="fat"
+      [startControl]="startFaturamentoControl" [endControl]="endFaturamentoControl">
+    </app-generic-date-period>
+  </div>
+
+  <div
+    style="margin-top: 2rem; padding: 1rem; background: rgba(0,0,0,0.2); border-radius: 12px; display: flex; flex-direction: column; gap: 1rem;">
+    <div>
+      <strong style="color: #64748b; font-size: 0.8rem; text-transform: uppercase;">Fornecedor Selecionado
+        (ID):</strong>
+      <p style="margin: 0.25rem 0 0 0; color: #a855f7; font-weight: bold; font-size: 1.2rem;">
+        {{ fornecedorControl.value || 'Nenhum' }}
+      </p>
+    </div>
+    <div>
+      <strong style="color: #64748b; font-size: 0.8rem; text-transform: uppercase;">Cliente Selecionado (ID):</strong>
+      <p style="margin: 0.25rem 0 0 0; color: #a855f7; font-weight: bold; font-size: 1.2rem;">
+        {{ clienteControl.value || 'Nenhum' }}
+      </p>
+    </div>
+    <div>
+      <strong style="color: #64748b; font-size: 0.8rem; text-transform: uppercase;">Produto Selecionado (ID):</strong>
+      <p style="margin: 0.25rem 0 0 0; color: #a855f7; font-weight: bold; font-size: 1.2rem;">
+        {{ produtoControl.value || 'Nenhum' }}
+      </p>
+    </div>
+    <div>
+      <strong style="color: #64748b; font-size: 0.8rem; text-transform: uppercase;">Período Emissão:</strong>
+      <p style="margin: 0.25rem 0 0 0; color: #a855f7; font-weight: bold; font-size: 1.2rem;">
+        {{ startEmissaoControl.value || '?' }} até {{ endEmissaoControl.value || '?' }}
+      </p>
+    </div>
+    <div>
+      <strong style="color: #64748b; font-size: 0.8rem; text-transform: uppercase;">Período Faturamento:</strong>
+      <p style="margin: 0.25rem 0 0 0; color: #a855f7; font-weight: bold; font-size: 1.2rem;">
+        {{ startFaturamentoControl.value || '?' }} até {{ endFaturamentoControl.value || '?' }}
+      </p>
+    </div>
+  </div>
+</div>

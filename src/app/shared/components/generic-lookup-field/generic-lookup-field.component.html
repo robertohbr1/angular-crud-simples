@@ -1,0 +1,34 @@
+@if (config?.linkRoute) {
+  <a [routerLink]="config?.linkRoute" target="_blank"
+     [title]="'Abrir ' + fieldLabel"
+     class="caption-link">
+    {{ fieldLabel }}
+  </a>
+} @else {
+  <label [for]="fieldId">{{ fieldLabel }}</label>
+}
+
+<div class="input-with-action">
+  <input [id]="fieldId" type="text" [formControl]="internalControl" class="form-control" [placeholder]="placeholder" />
+  
+  @if (config?.lookupEndpoint && mode !== 'DELETE') {
+    <button type="button" class="btn btn-secondary btn-icon" [title]="'Buscar ' + fieldLabel" (click)="openLookup()">
+      🔍
+    </button>
+  }
+</div>
+
+@if (lookupLabel()) {
+  <div class="lookup-description">
+    {{ lookupLabel() }}
+  </div>
+}
+
+@if (isModalOpen() && config) {
+  <app-generic-lookup-modal
+    [endpoint]="config.lookupEndpoint!"
+    [columns]="config.lookupColumns || []"
+    (selected)="onLookupSelected($event)"
+    (closed)="closeLookup()"
+  ></app-generic-lookup-modal>
+}

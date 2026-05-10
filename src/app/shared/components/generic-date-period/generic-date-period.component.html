@@ -1,0 +1,25 @@
+<div class="date-period-wrapper">
+  @if (caption) {
+    <label class="period-label">{{ caption }}</label>
+  }
+  
+  <div class="period-inputs">
+    <div class="input-group">
+      <input 
+        [id]="fieldIdPrefix + '-start'" 
+        [type]="inputType" 
+        [formControl]="startControl" 
+        class="form-control" />
+    </div>
+    
+    <span class="separator">até</span>
+    
+    <div class="input-group">
+      <input 
+        [id]="fieldIdPrefix + '-end'" 
+        [type]="inputType" 
+        [formControl]="endControl" 
+        class="form-control" />
+    </div>
+  </div>
+</div>

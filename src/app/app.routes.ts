@@ -86,5 +86,9 @@ export const routes: Routes = [
         { key: 'nome', label: 'Nome', ShowInGrid: true, ShowInEdit: true, type: 'text', required: true }
       ] as ColumnDefinition[]
     }
+  },
+  {
+    path: 'test-lookup',
+    loadComponent: () => import('./features/test-lookup/test-lookup.component').then(m => m.TestLookupComponent)
   }
 ];

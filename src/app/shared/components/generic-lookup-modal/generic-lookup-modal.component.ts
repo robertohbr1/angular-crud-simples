@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, inject, signal } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, inject, signal, ElementRef, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { GenericTableComponent, ColumnDefinition } from '../generic-table/generic-table.component';
 import { GenericCrudService } from '../../../core/services/generic-crud.service';
@@ -10,8 +10,9 @@ import { GenericCrudService } from '../../../core/services/generic-crud.service'
   templateUrl: './generic-lookup-modal.component.html',
   styleUrl: './generic-lookup-modal.component.css'
 })
-export class GenericLookupModalComponent implements OnInit {
+export class GenericLookupModalComponent implements OnInit, OnDestroy {
   private readonly crudService = inject(GenericCrudService);
+  private readonly el = inject(ElementRef);
 
   @Input() endpoint!: string;
   @Input() columns: ColumnDefinition[] = [];
@@ -24,7 +25,14 @@ export class GenericLookupModalComponent implements OnInit {
   errorMessage = signal<string | null>(null);
 
   ngOnInit(): void {
+    document.body.appendChild(this.el.nativeElement);
     this.loadRecords();
+  }
+
+  ngOnDestroy(): void {
+    if (this.el.nativeElement.parentNode) {
+      this.el.nativeElement.parentNode.removeChild(this.el.nativeElement);
+    }
   }
 
   loadRecords(): void {

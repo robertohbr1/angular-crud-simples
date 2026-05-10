@@ -11,30 +11,22 @@
     <div class="fields-grid">
       @for (field of visibleFields; track field.key) {
       <div class="form-group">
-        <label [for]="field.key">{{ field.label }}</label>
-        <div class="input-with-action" style="display: flex; gap: 8px; align-items: center;">
-          <input [id]="field.key" [type]="field.type || 'text'" [formControlName]="field.key" class="form-control"
-            style="flex-grow: 1;" [placeholder]="'Informe ' + field.label" />
-          @if (getLookupConfig(field)?.lookupEndpoint && mode !== 'DELETE') {
-          <button type="button" class="btn btn-secondary btn-icon" title="Buscar {{ field.label }}"
-            (click)="openLookup(field)"
-            style="display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; padding: 0; flex-shrink: 0;">
-            🔍
-          </button>
-          }
-          @if (getLookupConfig(field)?.linkRoute) {
-          <a [routerLink]="getLookupConfig(field)?.linkRoute" target="_blank" class="btn btn-secondary btn-icon"
-            [title]="'Abrir ' + field.label"
-            style="display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; padding: 0; text-decoration: none; flex-shrink: 0;">
-            ↗️
-          </a>
-          }
-          @if (lookupLabels[field.key]) {
-            <span class="lookup-label" style="font-size: 0.9em; color: var(--text-secondary, #6b7280); font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex-shrink: 1;">
-              {{ lookupLabels[field.key] }}
-            </span>
-          }
-        </div>
+        @if (field.lookupName) {
+          <app-generic-lookup-field
+            [formControlName]="field.key"
+            [lookupName]="field.lookupName"
+            [fieldLabel]="field.label"
+            [fieldId]="field.key"
+            [mode]="mode"
+            [placeholder]="'Informe ' + field.label">
+          </app-generic-lookup-field>
+        } @else {
+          <label [for]="field.key">{{ field.label }}</label>
+          <div class="input-with-action" style="display: flex; gap: 8px; align-items: center;">
+            <input [id]="field.key" [type]="field.type || 'text'" [formControlName]="field.key" class="form-control"
+              style="flex-grow: 1;" [placeholder]="'Informe ' + field.label" />
+          </div>
+        }
       </div>
       }
     </div>
@@ -60,12 +52,3 @@
     </div>
   </form>
 </div>
-
-@if (activeLookupConfig()) {
-  <app-generic-lookup-modal
-    [endpoint]="activeLookupConfig()!.lookupEndpoint!"
-    [columns]="activeLookupConfig()!.lookupColumns || []"
-    (selected)="onLookupSelected($event)"
-    (closed)="closeLookup()"
-  ></app-generic-lookup-modal>
-}
