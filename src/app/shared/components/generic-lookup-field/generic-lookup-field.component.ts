@@ -21,7 +21,10 @@ import { GenericLookupModalComponent } from '../generic-lookup-modal/generic-loo
       useExisting: forwardRef(() => GenericLookupFieldComponent),
       multi: true
     }
-  ]
+  ],
+  host: {
+    '[class.horizontal]': "orientation === 'horizontal'"
+  }
 })
 export class GenericLookupFieldComponent implements ControlValueAccessor, OnInit, OnDestroy {
   @Input() lookupName!: string;
@@ -29,6 +32,7 @@ export class GenericLookupFieldComponent implements ControlValueAccessor, OnInit
   @Input() fieldId!: string;
   @Input() placeholder?: string;
   @Input() mode: 'CREATE' | 'EDIT' | 'DELETE' = 'CREATE';
+  @Input() orientation: 'vertical' | 'horizontal' = 'vertical';
 
   private readonly apiService = inject(ApiService);
   private destroy$ = new Subject<void>();

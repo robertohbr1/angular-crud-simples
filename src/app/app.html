@@ -1,3 +1,4 @@
+@if (!isLookupTab) {
 <header class="main-header glass">
   <div class="logo">
     <span class="icon">🚀</span>
@@ -10,5 +11,10 @@
     <a routerLink="/test-lookup" routerLinkActive="active">Teste Lookup</a>
   </nav>
 </header>
+} @else {
+<header class="main-header glass" style="justify-content: flex-start;">
+  <button type="button" class="btn btn-secondary" (click)="closeTab()">⬅ Voltar</button>
+</header>
+}
 
 <router-outlet></router-outlet>

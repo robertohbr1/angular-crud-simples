@@ -1,5 +1,5 @@
 @if (config?.linkRoute) {
-  <a [routerLink]="config?.linkRoute" target="_blank"
+  <a [routerLink]="config?.linkRoute" [queryParams]="{ isLookupTab: 'true' }" target="_blank"
      [title]="'Abrir ' + fieldLabel"
      class="caption-link">
     {{ fieldLabel }}
