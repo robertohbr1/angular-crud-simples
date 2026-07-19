@@ -48,3 +48,34 @@ Para adicionar, por exemplo, "Categorias":
 4. (Opcional) Adicione um link no header em `app.html` para acessar a nova rota.
 
 Isso é o suficiente para ter Listagem, Paginação, Inclusão, Edição, Exclusão e Validação operando em conjunto com a API!
+
+## Execução do Projeto
+
+Pré-requisitos:
+- Node.js 20+ (com npm)
+
+Instalação de dependências:
+
+```powershell
+npm install
+```
+
+Execução rápida com script PowerShell:
+
+```powershell
+.\Exec.ps1
+```
+
+O script [Exec.ps1](Exec.ps1) garante que o comando rode na pasta correta do projeto e executa `npm start`.
+
+Se o PowerShell bloquear a execução de scripts, rode:
+
+```powershell
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+```
+
+Depois execute novamente:
+
+```powershell
+.\Exec.ps1
+```
